@@ -8,7 +8,6 @@
 
 #include "Timer1_Interface.h"
 
-
 void Timer1_SetOutCompareMode_A (CompareOutMode_e Mode)
 {
 	if ((Mode >= 0) && (Mode <= 3))
@@ -72,3 +71,33 @@ void Timer1_SetInterruptState(char State)
 	}
 }
 
+void Timer1_SetCaptureEdge(ICU_EDGE_e Edge)
+{
+	if ((Edge >= 0) && (Edge <= 1))
+	{
+		TCCR1B &= ~(1 << ICES1);
+		TCCR1B |= (Edge << ICES1);
+	}
+}
+
+int Timer1_ReadICR(void)
+{
+	return ICR1;
+}
+
+char Timer1_ReadCaptureMode(void)
+{
+	return GET_BIT(TCCR1B, ICES1);
+}
+
+
+char Timer1_GetICUFlag(void)
+{
+	return GET_BIT(TIFR, ICF1);
+}
+
+
+void Timer1_ClearICUFlag(void)
+{
+	SET_BIT(TIFR, ICF1);
+}
